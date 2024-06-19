@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FEDeksamenMaui.Data
 {
-    public class Database
+    public class Database : IDatabase
     {
         //private readonly SQLiteAsyncConnection _connection;
         //public DataBase()

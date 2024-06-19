@@ -1,16 +1,16 @@
-﻿using FEDeksamenMaui.ViewModels;
+﻿using FEDeksamenMaui.Data;
+using FEDeksamenMaui.ViewModels;
 
 namespace FEDeksamenMaui
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
-            BindingContext = new MainViewModel();
+
+            var database = App.Services.GetService<IDatabase>();
+            BindingContext = new MainViewModel(database);
         }
     }
-
 }

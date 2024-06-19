@@ -14,12 +14,12 @@ namespace FEDeksamenMaui.ViewModels
     {
         //check debtbook for observablecollection etc.
 
-        private readonly Database _database;
+        private readonly IDatabase _database;
 
-        public NewPageViewModel()
+        public NewPageViewModel(IDatabase database)
         {
-            //_database = new Database();
-            //_ = Initialize();
+            _database = database;
+            _ = Initialize();
         }
 
         private async Task Initialize()

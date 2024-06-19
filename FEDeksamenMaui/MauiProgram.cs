@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using FEDeksamenMaui.Data;
 
 namespace FEDeksamenMaui
 {
@@ -15,11 +17,20 @@ namespace FEDeksamenMaui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            //Kald configure services
+            ConfigureServices(builder.Services);
+
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            //add Database as Singleton
+            services.AddSingleton<IDatabase, Database>();
         }
     }
 }

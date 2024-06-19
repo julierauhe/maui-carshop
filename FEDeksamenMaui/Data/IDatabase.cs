@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FEDeksamenMaui.Data
 {
-    internal interface IDatabase
+    public interface IDatabase
     {
         //Task<int> SaveNewDebtor(DebtorItems item);
 
