@@ -4,32 +4,103 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="25">
-            <Image
-                Aspect="AspectFit"
-                HeightRequest="185"
-                SemanticProperties.Description="dot net bot in a race car number eight"
-                Source="dotnet_bot.png" />
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <Label
-                SemanticProperties.HeadingLevel="Level1"
-                Style="{StaticResource Headline}"
-                Text="Hello, World!" />
+            <!--  Title and Calendar Button  -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <Label
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                SemanticProperties.HeadingLevel="Level2"
-                Style="{StaticResource SubHeadline}"
-                Text="Welcome to &#10;.NET Multi-platform App UI" />
+                <Label
+                    Grid.Column="0"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Text="Velkommen til bilværkstedet"
+                    VerticalOptions="Center" />
 
-            <Button
-                x:Name="CounterBtn"
-                Command="{Binding OnCounterClickedCommand}"
-                HorizontalOptions="Fill"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Text="Click me" />
-        </VerticalStackLayout>
-    </ScrollView>
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding ShowCalendarCommand}"
+                    FontSize="14"
+                    HorizontalOptions="End"
+                    Text="Calendar"
+                    VerticalOptions="Center" />
+            </Grid>
 
+            <!--  Form  -->
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="30,0" Spacing="25">
+                    <Label
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="Book New Task" />
+
+                    <!--  Customer Name  -->
+                    <Label Text="Customer Name" />
+                    <Entry
+                        x:Name="CustomerNameEntry"
+                        Placeholder="Enter customer name"
+                        Text="{Binding NewCustomerName}" />
+
+                    <!--  Customer Address  -->
+                    <Label Text="Customer Address" />
+                    <Entry
+                        x:Name="CustomerAddressEntry"
+                        Placeholder="Enter customer address"
+                        Text="{Binding NewCustomerAddress}" />
+
+                    <!--  Car Brand  -->
+                    <Label Text="Car Brand" />
+                    <Entry
+                        x:Name="CarBrandEntry"
+                        Placeholder="Enter car brand"
+                        Text="{Binding NewCarBrand}" />
+
+                    <!--  Car Model  -->
+                    <Label Text="Car Model" />
+                    <Entry
+                        x:Name="CarModelEntry"
+                        Placeholder="Enter car model"
+                        Text="{Binding NewCarModel}" />
+
+                    <!--  Registration Number  -->
+                    <Label Text="Registration Number" />
+                    <Entry
+                        x:Name="RegistrationNumberEntry"
+                        Placeholder="Enter registration number"
+                        Text="{Binding NewRegNumber}" />
+
+                    <!--  Time of Submission  -->
+                    <Label Text="Time of Submission" />
+                    <DatePicker x:Name="SubmissionDatePicker" Date="{Binding NewDate, Mode=TwoWay}" />
+                    <TimePicker x:Name="SubmissionTimePicker" Time="{Binding NewTime, Mode=TwoWay}" />
+
+                    <!--  Reparations  -->
+                    <Label Text="Reparations" />
+                    <Picker x:Name="ReparationsPicker" SelectedItem="{Binding NewReperation, Mode=TwoWay}">
+                        <Picker.Items>
+                            <x:String>Oil Change</x:String>
+                            <x:String>Tire Change</x:String>
+                            <x:String>Engine Check</x:String>
+                            <x:String>Brake Replacement</x:String>
+                            <!--  Add more options as needed  -->
+                        </Picker.Items>
+                    </Picker>
+
+                    <!--  Book Task Button  -->
+                    <Button
+                        Command="{Binding BookTaskCommand}"
+                        HorizontalOptions="Fill"
+                        Text="Book Task" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FEDeksamenMaui.Models;
+using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -9,54 +11,52 @@ namespace FEDeksamenMaui.Data
 {
     public class Database : IDatabase
     {
-        //private readonly SQLiteAsyncConnection _connection;
-        //public DataBase()
-        //{
-        //    var dataDir = FileSystem.AppDataDirectory;
-        //    var databasePath = Path.Combine(dataDir, "INSERTNAME.db");
+        private readonly SQLiteAsyncConnection _connection;
+        public Database()
+        {
+            var dataDir = FileSystem.AppDataDirectory;
+            var databasePath = Path.Combine(dataDir, "CarWorkshop.db");
 
-        //    var dbOptions = new SQLiteConnectionString(databasePath, true);
-        //    _connection = new SQLiteAsyncConnection(dbOptions);
+            var dbOptions = new SQLiteConnectionString(databasePath, true);
+            _connection = new SQLiteAsyncConnection(dbOptions);
 
-        //    _ = Initialise();
-        //}
+            _ = Initialise();
+        }
 
-        //private async Task Initialise()
-        //{
-        //    //_ = _connection.DropTableAsync<DebtorItems>();
-        //    //_ = _connection.DropTableAsync<PartialDebt>();
+        private async Task Initialise()
+        {
+            //_ = _connection.DropTableAsync<Order>();
+            //_ = _connection.DropTableAsync<Material>();
+            //_ = _connection.DropTableAsync<Invoice>();
 
-        //    _ = _connection.CreateTableAsync<PartialDebt>();
-        //    _ = _connection.CreateTableAsync<DebtorItems>();
+            _ = _connection.CreateTableAsync<Order>();
+            _ = _connection.CreateTableAsync<Material>();
+            _ = _connection.CreateTableAsync<Invoice>();
 
-        //    await Task.CompletedTask;
-        //}
+            await Task.CompletedTask;
+        }
 
 
-        //public async Task<int> SaveNewDebtor(DebtorItems item)
-        //{
-        //    await _connection.InsertAsync(item);
-        //    return item.Id;
-        //}
+        public async Task<int> AddMaterials(List<Material> items)
+        {
+            return await _connection.InsertAllAsync(items);
+        }
 
-        //public async Task<int> SaveNewPartialDebt(PartialDebt item)
-        //{
-        //    return await _connection.InsertAsync(item);
-        //}
+        public async Task<int> SaveNewOrder(Order item)
+        {
+            return await _connection.InsertAsync(item);
+        }
 
-        //public async Task<DebtorItems> GetDebtor(int id)
-        //{
-        //    return await _connection.Table<DebtorItems>().Where(d => d.Id == id).FirstOrDefaultAsync();
-        //}
+        public async Task<int> SaveNewInvoice(Invoice item)
+        {
+            return await _connection.InsertAsync(item);
+        }
 
-        //public async Task<List<DebtorItems>> GetAllDebtors()
-        //{
-        //    return await _connection.Table<DebtorItems>().ToListAsync();
-        //}
-
-        //public async Task<List<PartialDebt>> GetAllPartialDebtsById(int id)
-        //{
-        //    return await _connection.Table<PartialDebt>().Where(p => p.DebitorId == id).ToListAsync();
-        //}
+        public async Task<List<Order>> GetOrdersForSelectedDate(DateOnly date)
+        {
+            return await _connection.Table<Order>()
+                                    .Where(o => o.TimeOfSubmission.Date == date.ToDateTime(new TimeOnly()).Date)
+                                    .ToListAsync();
+        }
     }
 }

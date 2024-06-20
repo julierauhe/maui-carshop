@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="FEDeksamenMaui.Views.CalendarPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="CalendarPage">
+
+    <StackLayout>
+        <CollectionView
+            ItemsSource="{Binding Days}"
+            SelectedItem="SelectedDate"
+            SelectionChanged="OnDateSelected"
+            SelectionMode="Single">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="7" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame
+                        Margin="5"
+                        Padding="10"
+                        BackgroundColor="{Binding BackgroundColor}"
+                        BorderColor="Black"
+                        HasShadow="True">
+                        <Label
+                            HorizontalOptions="Center"
+                            Text="{Binding Day}"
+                            VerticalOptions="Center" />
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!--  Show Tasks Button  -->
+        <Button
+            Command="{Binding ShowTasksCommand}"
+            HorizontalOptions="Center"
+            Text="Show Tasks for the Day"
+            VerticalOptions="End" />
+
+        <!--  Create Invoice Button  -->
+        <Button
+            Command="{Binding GoToInvoiceCommand}"
+            HorizontalOptions="Center"
+            Text="Create Invoice"
+            VerticalOptions="End" />
+    </StackLayout>
+</ContentPage>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FEDeksamenMaui.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,11 @@ namespace FEDeksamenMaui.Data
 {
     public interface IDatabase
     {
-        //Task<int> SaveNewDebtor(DebtorItems item);
+        Task<int> AddMaterials(List<Material> items);
+        Task<int> SaveNewOrder(Order item);
 
-        //Task<int> UpdateDebtor(DebtorItems item);
+        Task<int> SaveNewInvoice(Invoice item);
 
-        //Task<DebtorItems> GetDebtor();
-
-        //Task<List<DebtorItems>> GetAllDebtors();
+        Task<List<Order>> GetOrdersForSelectedDate(DateOnly date);
     }
 }
