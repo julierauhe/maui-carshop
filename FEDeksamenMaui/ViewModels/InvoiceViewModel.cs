@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FEDeksamenMaui.Data;
+using FEDeksamenMaui.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +14,16 @@ namespace FEDeksamenMaui.ViewModels
 {
     public partial class InvoiceViewModel : ObservableObject
     {
-        //check debtbook for observablecollection etc.
+        [ObservableProperty]
+        private string mechanicName;
+
+        [ObservableProperty]
+        private float hoursUsed;
+
+        [ObservableProperty]
+        private decimal price;
+
+        public ObservableCollection<MaterialViewModel> MaterialsUsed { get; set; } = new();
 
         private readonly IDatabase _database;
 
@@ -23,26 +35,46 @@ namespace FEDeksamenMaui.ViewModels
 
         private async Task Initialize()
         {
-            //not sure anything should happen here
+            MaterialsUsed.Add(new MaterialViewModel());
         }
 
         [RelayCommand]
-        public async Task OnCreateInvoice()
+        private void AddMaterial()
         {
-            //save invoice to database
+            MaterialsUsed.Add(new MaterialViewModel());
         }
 
-
-        private void OnMaterialSelected(object sender, EventArgs e)
+        [RelayCommand]
+        public async Task SaveInvoice()
         {
-            //if (sender is Picker picker && picker.SelectedItem is string selectedMaterial)
-            //{
-            //    var viewModel = (InvoiceViewModel)BindingContext;
-            //    if (!viewModel.SelectedMaterials.Contains(selectedMaterial))
-            //    {
-            //        viewModel.SelectedMaterials.Add(selectedMaterial);
-            //    }
-            //}
+            try
+            {
+                var materials = MaterialsUsed
+                    .Select(m => new Dictionary<string, decimal> { { m.Name, m.Price } })
+                    .ToList();
+
+                var invoice = new Invoice
+                {
+                    MechanicName = MechanicName,
+                    MaterialsUsed = materials,
+                    HoursUsed = HoursUsed,
+                    Price = Price
+                };
+
+                var status = await _database.SaveNewInvoice(invoice);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception saving new order: " + ex.Message);
+            }
         }
+    }
+    public partial class MaterialViewModel : ObservableObject
+    {
+        [ObservableProperty]
+        private string name;
+
+        [ObservableProperty]
+        private decimal price;
     }
 }

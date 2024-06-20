@@ -9,7 +9,6 @@ namespace FEDeksamenMaui.Data
 {
     public interface IDatabase
     {
-        Task<int> AddMaterials(List<Material> items);
         Task<int> SaveNewOrder(Order item);
 
         Task<int> SaveNewInvoice(Invoice item);

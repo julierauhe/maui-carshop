@@ -43,7 +43,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--Show Orders Button-->
+            <!--  Show Orders Button  -->
             <Button
                 Command="{Binding ShowAllOrdersCommand}"
                 HorizontalOptions="Center"

@@ -25,20 +25,13 @@ namespace FEDeksamenMaui.Data
 
         private async Task Initialise()
         {
-            _ = _connection.DropTableAsync<Order>();
-            _ = _connection.DropTableAsync<Material>();
-            _ = _connection.DropTableAsync<Invoice>();
+            //_ = _connection.DropTableAsync<Order>();
+            //_ = _connection.DropTableAsync<Invoice>();
 
             _ = _connection.CreateTableAsync<Order>();
             _ = _connection.CreateTableAsync<Invoice>();
 
             await Task.CompletedTask;
-        }
-
-
-        public async Task<int> AddMaterials(List<Material> items)
-        {
-            return await _connection.InsertAllAsync(items);
         }
 
         public async Task<int> SaveNewOrder(Order item)
