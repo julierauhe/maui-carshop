@@ -27,7 +27,10 @@ namespace FEDeksamenMaui.ViewModels
         private string monthYear;
 
         [ObservableProperty]
-        private bool noOrdersMessageVisible;
+        private bool errorMessageVisible;
+
+        [ObservableProperty]
+        private string calendarErrorMessage;
 
         [ObservableProperty]
         private Order? selectedOrder;
@@ -49,15 +52,22 @@ namespace FEDeksamenMaui.ViewModels
         [RelayCommand]
         public async Task CreateInvoice()
         {
-            if(_selectedDate != null && selectedOrder != null)
+            if(_selectedDate == null)
             {
-                await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage(selectedOrder.Id));
+                CalendarErrorMessage = "Please choose a date";
+                ErrorMessageVisible = true;
+            }
+            else if(selectedOrder == null)
+            {
+                CalendarErrorMessage = "Please choose an order";
+                ErrorMessageVisible = true;
             }
             else
             {
-                //implement message showing: no date or order chosen
-            }
+                ErrorMessageVisible = false;
+                await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage(selectedOrder.Id));
 
+            }
         }
 
         private void UpdateCalendar()
@@ -108,9 +118,15 @@ namespace FEDeksamenMaui.ViewModels
 
                     await Task.CompletedTask;
 
-                    NoOrdersMessageVisible = orders.Count == 0;
-
-                    
+                    if(orders.Count == 0)
+                    {
+                        CalendarErrorMessage = "No orders on the selected date";
+                        ErrorMessageVisible = true;
+                    }
+                    else
+                    {
+                        ErrorMessageVisible = false;
+                    }    
                 }
             }
             catch (Exception ex)

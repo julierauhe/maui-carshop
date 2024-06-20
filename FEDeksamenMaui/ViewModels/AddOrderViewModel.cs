@@ -12,7 +12,6 @@ namespace FEDeksamenMaui.ViewModels
     {
         [ObservableProperty]
         private Order? _selectedItem;
-
         public string NewCustomerName { get; set; }
         public string NewCustomerAddress { get; set; }
         public string NewCarBrand { get; set; }

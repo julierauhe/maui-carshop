@@ -19,59 +19,53 @@
                 HorizontalOptions="Center"
                 Text="Book New Order" />
 
-            <!--  Customer Name  -->
             <Label Text="Customer Name" />
             <Entry
                 x:Name="CustomerNameEntry"
                 Placeholder="Enter customer name"
                 Text="{Binding NewCustomerName}" />
 
-            <!--  Customer Address  -->
             <Label Text="Customer Address" />
             <Entry
                 x:Name="CustomerAddressEntry"
                 Placeholder="Enter customer address"
                 Text="{Binding NewCustomerAddress}" />
 
-            <!--  Car Brand  -->
             <Label Text="Car Brand" />
             <Entry
                 x:Name="CarBrandEntry"
                 Placeholder="Enter car brand"
                 Text="{Binding NewCarBrand}" />
 
-            <!--  Car Model  -->
             <Label Text="Car Model" />
             <Entry
                 x:Name="CarModelEntry"
                 Placeholder="Enter car model"
                 Text="{Binding NewCarModel}" />
 
-            <!--  Registration Number  -->
             <Label Text="Registration Number" />
             <Entry
                 x:Name="RegistrationNumberEntry"
                 Placeholder="Enter registration number"
                 Text="{Binding NewRegNumber}" />
 
-            <!--  Time of Submission  -->
             <Label Text="Time of Submission" />
             <DatePicker x:Name="SubmissionDatePicker" Date="{Binding NewDate, Mode=TwoWay}" />
             <TimePicker x:Name="SubmissionTimePicker" Time="{Binding NewTime, Mode=TwoWay}" />
 
-            <!--  Reparations  -->
             <Label Text="Reparations" />
             <Picker x:Name="ReparationsPicker" SelectedItem="{Binding NewReperation, Mode=TwoWay}">
                 <Picker.Items>
-                    <x:String>Oil Change</x:String>
-                    <x:String>Tire Change</x:String>
-                    <x:String>Engine Check</x:String>
+                    <x:String>Service and Oil Change</x:String>
+                    <x:String>Summer Tires on</x:String>
+                    <x:String>Winter Tires on</x:String>
+                    <x:String>New tires</x:String>
                     <x:String>Brake Replacement</x:String>
-                    <!--  Add more options as needed  -->
+                    <x:String>Engine check</x:String>
+                    <x:String>Reperation</x:String>
                 </Picker.Items>
             </Picker>
 
-            <!--  Book Order Button  -->
             <Button
                 Command="{Binding BookOrderCommand}"
                 HorizontalOptions="Fill"

@@ -30,8 +30,6 @@ namespace FEDeksamenMaui.Data
 
             await _connection.CreateTableAsync<Order>();
             await _connection.CreateTableAsync<Invoice>();
-
-           //await Task.CompletedTask;
         }
 
         public async Task<int> SaveNewOrder(Order item)

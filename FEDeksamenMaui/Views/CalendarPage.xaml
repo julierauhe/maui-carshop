@@ -43,7 +43,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--  Create Invoice Button  -->
+
             <Button
                 Command="{Binding CreateInvoiceCommand}"
                 HorizontalOptions="Center"
@@ -63,8 +63,8 @@
             <Label
                 FontSize="16"
                 HorizontalOptions="Center"
-                IsVisible="{Binding NoOrdersMessageVisible}"
-                Text="There's no orders on the selected date"
+                IsVisible="{Binding ErrorMessageVisible}"
+                Text="{Binding CalendarErrorMessage}"
                 VerticalOptions="Start" />
 
             <CollectionView

@@ -17,7 +17,6 @@ namespace FEDeksamenMaui
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            //Kald configure services
             ConfigureServices(builder.Services);
 
 #if DEBUG
