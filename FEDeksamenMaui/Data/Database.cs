@@ -25,12 +25,11 @@ namespace FEDeksamenMaui.Data
 
         private async Task Initialise()
         {
-            //_ = _connection.DropTableAsync<Order>();
-            //_ = _connection.DropTableAsync<Material>();
-            //_ = _connection.DropTableAsync<Invoice>();
+            _ = _connection.DropTableAsync<Order>();
+            _ = _connection.DropTableAsync<Material>();
+            _ = _connection.DropTableAsync<Invoice>();
 
             _ = _connection.CreateTableAsync<Order>();
-            _ = _connection.CreateTableAsync<Material>();
             _ = _connection.CreateTableAsync<Invoice>();
 
             await Task.CompletedTask;
@@ -54,9 +53,17 @@ namespace FEDeksamenMaui.Data
 
         public async Task<List<Order>> GetOrdersForSelectedDate(DateOnly date)
         {
+            var dateTimeStart = date.ToDateTime(TimeOnly.MinValue);
+            var dateTimeEnd = date.ToDateTime(TimeOnly.MaxValue);
+
             return await _connection.Table<Order>()
-                                    .Where(o => o.TimeOfSubmission.Date == date.ToDateTime(new TimeOnly()).Date)
+                                    .Where(o => o.TimeOfSubmission >= dateTimeStart && o.TimeOfSubmission <= dateTimeEnd)
                                     .ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllOrders()
+        {
+            return await _connection.Table<Order>().ToListAsync();
         }
     }
 }

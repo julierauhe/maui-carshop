@@ -40,7 +40,7 @@
                     <Label
                         FontSize="20"
                         HorizontalOptions="Center"
-                        Text="Book New Task" />
+                        Text="Book New Order" />
 
                     <!--  Customer Name  -->
                     <Label Text="Customer Name" />
@@ -94,11 +94,11 @@
                         </Picker.Items>
                     </Picker>
 
-                    <!--  Book Task Button  -->
+                    <!--  Book Order Button  -->
                     <Button
-                        Command="{Binding BookTaskCommand}"
+                        Command="{Binding BookOrderCommand}"
                         HorizontalOptions="Fill"
-                        Text="Book Task" />
+                        Text="Book Order" />
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,18 @@ namespace FEDeksamenMaui.ViewModels
 {
     public partial class CalendarViewModel : ObservableObject
     {
-        //check debtbook for observablecollection etc.
+        private DateTime _currentDate;
         public ObservableCollection<Order> OrdersForSelectedDate { get; set; } = new();
+        public ObservableCollection<DayViewModel> Days { get; set; } = new();
+        
+        [ObservableProperty]
+        private DayViewModel? _selectedDate;
 
         [ObservableProperty]
+        private string monthYear;
 
-        private DateOnly? _selectedDate;
+        [ObservableProperty]
+        private bool noOrdersMessageVisible;
 
         private readonly IDatabase _database;
 
@@ -32,7 +39,8 @@ namespace FEDeksamenMaui.ViewModels
 
         private async Task Initialize()
         {
-            //check debtbook for example on implementation here
+            _currentDate = new DateTime(2024, 6, 1);
+            UpdateCalendar();
         }
 
         [RelayCommand]
@@ -41,25 +49,111 @@ namespace FEDeksamenMaui.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage());
         }
 
+        private void UpdateCalendar()
+        {
+            Days.Clear();
+            MonthYear = _currentDate.ToString("MMMM yyyy", CultureInfo.InvariantCulture);
+
+            var daysInMonth = DateTime.DaysInMonth(_currentDate.Year, _currentDate.Month);
+            for (int day = 1; day <= daysInMonth; day++)
+            {
+                var date = new DateTime(_currentDate.Year, _currentDate.Month, day);
+                Days.Add(new DayViewModel
+                {
+                    Date = date,
+                    BackgroundColor = "LightGray"
+                });
+            }
+        }
+
+        partial void OnSelectedDateChanged(DayViewModel? oldValue, DayViewModel? newValue)
+        {
+            if (oldValue != null)
+            {
+                oldValue.BackgroundColor = "LightGray";
+            }
+
+            if (newValue != null)
+            {
+                newValue.BackgroundColor = "LightBlue";
+            }
+        }
+
         [RelayCommand]
-        public async Task ShowTasks()
+        public async Task ShowOrders()
         {
             try
             {
-                var orders = await _database.GetOrdersForSelectedDate(_selectedDate.Value);
-
-                foreach(var order in orders)
+                if (SelectedDate != null)
                 {
-                    OrdersForSelectedDate.Add(order);
-                }
+                    var dateOnly = DateOnly.FromDateTime(SelectedDate.Date);
+                    var orders = await _database.GetOrdersForSelectedDate(dateOnly);
 
-                await Task.CompletedTask;
+                    OrdersForSelectedDate.Clear();
+                    foreach (var order in orders)
+                    {
+                        OrdersForSelectedDate.Add(order);
+                    }
+
+                    await Task.CompletedTask;
+
+                    if(orders.Count == 0)
+                    {
+                        NoOrdersMessageVisible = orders.Count == 0;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("Exp while showing orders for date: " + ex.Message);
             }
     
+        }
+
+        [RelayCommand]
+        public async Task ShowAllOrders()
+        {
+            try
+            {
+
+                    var orders = await _database.GetAllOrders();
+
+                    OrdersForSelectedDate.Clear();
+                    foreach (var order in orders)
+                    {
+                        OrdersForSelectedDate.Add(order);
+                    }
+
+                    await Task.CompletedTask;
+
+                    if (orders.Count == 0)
+                    {
+                        NoOrdersMessageVisible = orders.Count == 0;
+                    }
+          
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exp while showing orders for date: " + ex.Message);
+            }
+
+        }
+    }
+
+    public class DayViewModel : ObservableObject
+    {
+        public DateTime Date { get; set; }
+
+        public string Day => Date.Day.ToString();
+
+        private string _backgroundColor;
+        public string BackgroundColor
+        {
+            get => _backgroundColor;
+            set
+            {
+                SetProperty(ref _backgroundColor, value);
+            }
         }
     }
 

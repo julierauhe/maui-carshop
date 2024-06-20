@@ -12,11 +12,11 @@
                 HorizontalOptions="Center"
                 Text="Create Invoice" />
 
-            <!--  Task Description  -->
+            <!--  Order Description  -->
             <Label
                 FontSize="18"
                 HorizontalOptions="Start"
-                Text="{Binding TaskDescription}" />
+                Text="{Binding OrderDescription}" />
 
             <!--  Mechanic Name  -->
             <Label Text="Mechanic Name" />

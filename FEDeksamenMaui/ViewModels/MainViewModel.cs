@@ -31,13 +31,26 @@ namespace FEDeksamenMaui.ViewModels
 
         private readonly IDatabase _database;
 
-        private DateOnly _newDate;
+        private DateOnly newDate;
         public DateOnly NewDate
         {
-            get => _newDate;
+            get => newDate;
             set
             {
-                if (SetProperty(ref _newDate, value))
+                if (SetProperty(ref newDate, value))
+                {
+                    UpdateTimeOfSubmission();
+                }
+            }
+        }
+
+        private TimeOnly newTime;
+        public TimeOnly NewTime
+        {
+            get => newTime;
+            set
+            {
+                if (SetProperty(ref newTime, value))
                 {
                     UpdateTimeOfSubmission();
                 }
@@ -49,19 +62,6 @@ namespace FEDeksamenMaui.ViewModels
             NewTimeOfSubmission = new DateTime(NewDate.Year, NewDate.Month, NewDate.Day, NewTime.Hour, NewTime.Minute, NewTime.Second);
         }
 
-        private TimeOnly _newTime;
-        public TimeOnly NewTime
-        {
-            get => _newTime;
-            set
-            {
-                if (SetProperty(ref _newTime, value))
-                {
-                    UpdateTimeOfSubmission();
-                }
-            }
-        }
-
         public MainViewModel(IDatabase database)
         {
             _database = database;
@@ -70,7 +70,9 @@ namespace FEDeksamenMaui.ViewModels
 
         private async Task Initialize()
         {
-            //not sure anything should happen here
+            NewDate = DateOnly.FromDateTime(DateTime.Now);
+            NewTime = TimeOnly.FromDateTime(DateTime.Now);
+            UpdateTimeOfSubmission();
         }
 
         [RelayCommand]
@@ -80,7 +82,7 @@ namespace FEDeksamenMaui.ViewModels
         }
 
         [RelayCommand]
-        public async Task BookTask()
+        public async Task BookOrder()
         {
             try
             {

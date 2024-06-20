@@ -15,7 +15,7 @@ namespace FEDeksamenMaui.Models
         //OrderId refers to Id in Order
         public int OrderId { get; set; }
         public string MechanicName { get; set; }
-        public List<Material> MaterialsUsed { get; set; }
+        public List<Dictionary<string, decimal>> MaterialsUsed { get; set; }
         public float HoursUsed { get; set; }
         public decimal Price { get; set; }
     }

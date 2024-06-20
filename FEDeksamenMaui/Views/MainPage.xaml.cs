@@ -12,5 +12,14 @@ namespace FEDeksamenMaui
             var database = App.Services.GetService<IDatabase>();
             BindingContext = new MainViewModel(database);
         }
+
+        private void OnDateSelected(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.FirstOrDefault() is DayViewModel selectedDate)
+            {
+                var viewModel = (CalendarViewModel)BindingContext;
+                viewModel.SelectedDate = selectedDate;
+            }
+        }
     }
 }

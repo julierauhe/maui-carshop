@@ -15,5 +15,7 @@ namespace FEDeksamenMaui.Data
         Task<int> SaveNewInvoice(Invoice item);
 
         Task<List<Order>> GetOrdersForSelectedDate(DateOnly date);
+
+        Task<List<Order>> GetAllOrders();
     }
 }

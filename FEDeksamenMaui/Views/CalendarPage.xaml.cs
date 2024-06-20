@@ -13,12 +13,13 @@ public partial class CalendarPage : ContentPage
         BindingContext = new CalendarViewModel(database);
     }
 
-    private void OnDateSelected(object sender, SelectionChangedEventArgs e)
+    private async void OnDateSelected(object sender, SelectionChangedEventArgs e)
     {
-        //if (e.CurrentSelection.FirstOrDefault() is DayViewModel selectedDay)
-        //{
-        //    var viewModel = (CalendarViewModel)BindingContext;
-        //    viewModel.SelectedDay = selectedDay;
-        //}
+        if (e.CurrentSelection.FirstOrDefault() is DayViewModel selectedDate)
+        {
+            var viewModel = (CalendarViewModel)BindingContext;
+            viewModel.SelectedDate = selectedDate;
+            await viewModel.ShowOrdersCommand.ExecuteAsync(null);
+        }
     }
 }
