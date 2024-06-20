@@ -29,6 +29,9 @@ namespace FEDeksamenMaui.ViewModels
         [ObservableProperty]
         private bool noOrdersMessageVisible;
 
+        [ObservableProperty]
+        private Order? selectedOrder;
+
         private readonly IDatabase _database;
 
         public CalendarViewModel(IDatabase database)
@@ -44,9 +47,9 @@ namespace FEDeksamenMaui.ViewModels
         }
 
         [RelayCommand]
-        public async Task GoToInvoice()
+        public async Task CreateInvoice()
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage());
+            await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage(selectedOrder.Id));
         }
 
         private void UpdateCalendar()
@@ -115,28 +118,25 @@ namespace FEDeksamenMaui.ViewModels
         {
             try
             {
+                var orders = await _database.GetAllOrders();
 
-                    var orders = await _database.GetAllOrders();
+                OrdersForSelectedDate.Clear();
+                foreach (var order in orders)
+                {
+                    OrdersForSelectedDate.Add(order);
+                }
 
-                    OrdersForSelectedDate.Clear();
-                    foreach (var order in orders)
-                    {
-                        OrdersForSelectedDate.Add(order);
-                    }
+                await Task.CompletedTask;
 
-                    await Task.CompletedTask;
-
-                    if (orders.Count == 0)
-                    {
-                        NoOrdersMessageVisible = orders.Count == 0;
-                    }
-          
+                if (orders.Count == 0)
+                {
+                    NoOrdersMessageVisible = orders.Count == 0;
+                }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine("Exp while showing orders for date: " + ex.Message);
             }
-
         }
     }
 
@@ -156,6 +156,4 @@ namespace FEDeksamenMaui.ViewModels
             }
         }
     }
-
-
 }

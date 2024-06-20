@@ -52,7 +52,7 @@
 
             <!--  Create Invoice Button  -->
             <Button
-                Command="{Binding GoToInvoiceCommand}"
+                Command="{Binding CreateInvoiceCommand}"
                 HorizontalOptions="Center"
                 Text="Create Invoice"
                 VerticalOptions="End" />
@@ -74,7 +74,10 @@
                 Text="There's no orders on the selected date"
                 VerticalOptions="Start" />
 
-            <CollectionView ItemsSource="{Binding OrdersForSelectedDate}">
+            <CollectionView
+                ItemsSource="{Binding OrdersForSelectedDate}"
+                SelectedItem="{Binding SelectedOrder}"
+                SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame
@@ -82,15 +85,17 @@
                             Padding="10"
                             BorderColor="Black"
                             HasShadow="True">
-                            <StackLayout>
-                                <Label FontSize="16" Text="{Binding CustomerName}" />
-                                <Label FontSize="14" Text="{Binding CustomerAddress}" />
-                                <Label FontSize="14" Text="{Binding CarBrand}" />
-                                <Label FontSize="14" Text="{Binding CarModel}" />
-                                <Label FontSize="14" Text="{Binding RegistrationNumber}" />
-                                <Label FontSize="14" Text="{Binding TimeOfSubmission}" />
-                                <Label FontSize="14" Text="{Binding Reperation}" />
-                            </StackLayout>
+                            <VerticalStackLayout>
+                                <HorizontalStackLayout>
+                                    <Label FontSize="16" Text="{Binding CustomerName}" />
+                                    <Label FontSize="14" Text="{Binding CustomerAddress}" />
+                                    <Label FontSize="14" Text="{Binding CarBrand}" />
+                                    <Label FontSize="14" Text="{Binding CarModel}" />
+                                    <Label FontSize="14" Text="{Binding RegistrationNumber}" />
+                                    <Label FontSize="14" Text="{Binding TimeOfSubmission}" />
+                                    <Label FontSize="14" Text="{Binding Reperation}" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

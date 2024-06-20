@@ -25,11 +25,14 @@ namespace FEDeksamenMaui.ViewModels
 
         public ObservableCollection<MaterialViewModel> MaterialsUsed { get; set; } = new();
 
+        private int _orderId;
+
         private readonly IDatabase _database;
 
-        public InvoiceViewModel(IDatabase database)
+        public InvoiceViewModel(IDatabase database, int orderId)
         {
             _database = database;
+            _orderId = orderId;
             _ = Initialize();
         }
 
@@ -55,6 +58,7 @@ namespace FEDeksamenMaui.ViewModels
 
                 var invoice = new Invoice
                 {
+                    OrderId = _orderId,
                     MechanicName = MechanicName,
                     MaterialsUsed = materials,
                     HoursUsed = HoursUsed,
