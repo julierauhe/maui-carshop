@@ -3,7 +3,7 @@
     x:Class="FEDeksamenMaui.Views.CalendarPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="CalendarPage">
+    Title="Appointment alendar">
 
     <Grid Padding="10">
         <Grid.ColumnDefinitions>
@@ -43,13 +43,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <!--  Show Orders Button  -->
-            <Button
-                Command="{Binding ShowAllOrdersCommand}"
-                HorizontalOptions="Center"
-                Text="Show All Orders"
-                VerticalOptions="End" />
-
             <!--  Create Invoice Button  -->
             <Button
                 Command="{Binding CreateInvoiceCommand}"
@@ -88,11 +81,17 @@
                             <VerticalStackLayout>
                                 <HorizontalStackLayout>
                                     <Label FontSize="16" Text="{Binding CustomerName}" />
+                                    <Label FontSize="14" Text=" - " />
                                     <Label FontSize="14" Text="{Binding CustomerAddress}" />
+                                    <Label FontSize="14" Text=" - " />
                                     <Label FontSize="14" Text="{Binding CarBrand}" />
+                                    <Label FontSize="14" Text=" - " />
                                     <Label FontSize="14" Text="{Binding CarModel}" />
+                                    <Label FontSize="14" Text=" - " />
                                     <Label FontSize="14" Text="{Binding RegistrationNumber}" />
+                                    <Label FontSize="14" Text=" - " />
                                     <Label FontSize="14" Text="{Binding TimeOfSubmission}" />
+                                    <Label FontSize="14" Text=" - " />
                                     <Label FontSize="14" Text="{Binding Reperation}" />
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>

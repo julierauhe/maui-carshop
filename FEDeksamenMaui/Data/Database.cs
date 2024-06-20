@@ -28,10 +28,10 @@ namespace FEDeksamenMaui.Data
             //_ = _connection.DropTableAsync<Order>();
             //_ = _connection.DropTableAsync<Invoice>();
 
-            _ = _connection.CreateTableAsync<Order>();
-            _ = _connection.CreateTableAsync<Invoice>();
+            await _connection.CreateTableAsync<Order>();
+            await _connection.CreateTableAsync<Invoice>();
 
-            await Task.CompletedTask;
+           //await Task.CompletedTask;
         }
 
         public async Task<int> SaveNewOrder(Order item)
@@ -41,6 +41,7 @@ namespace FEDeksamenMaui.Data
 
         public async Task<int> SaveNewInvoice(Invoice item)
         {
+            _ = _connection.CreateTableAsync<Invoice>();
             return await _connection.InsertAsync(item);
         }
 
@@ -57,6 +58,16 @@ namespace FEDeksamenMaui.Data
         public async Task<List<Order>> GetAllOrders()
         {
             return await _connection.Table<Order>().ToListAsync();
+        }
+
+        public async Task<Invoice> GetInvoiceForOrder(int orderId)
+        {
+            return await _connection.Table<Invoice>().Where(i => i.OrderId == orderId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Order> GetOrderById(int orderId)
+        {
+            return await _connection.Table<Order>().Where(o => o.Id == orderId).FirstOrDefaultAsync();
         }
     }
 }

@@ -16,5 +16,9 @@ namespace FEDeksamenMaui.Data
         Task<List<Order>> GetOrdersForSelectedDate(DateOnly date);
 
         Task<List<Order>> GetAllOrders();
+
+        Task<Invoice> GetInvoiceForOrder(int orderId);
+
+        Task<Order> GetOrderById(int orderId);
     }
 }

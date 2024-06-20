@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,13 @@ namespace FEDeksamenMaui.Models
         //OrderId refers to Id in Order
         public int OrderId { get; set; }
         public string MechanicName { get; set; }
-        public List<Dictionary<string, decimal>> MaterialsUsed { get; set; }
-        public float HoursUsed { get; set; }
-        public decimal Price { get; set; }
+        
+        [TextBlob("MaterialsUsedBlobbed")]
+        public List<Dictionary<string, int>> MaterialsUsed { get; set; }
+        public int HoursUsed { get; set; }
+        public int Price { get; set; }
+        
+        [Ignore]
+        public string MaterialsUsedBlobbed { get; set; }
     }
 }

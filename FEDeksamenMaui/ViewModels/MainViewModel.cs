@@ -4,75 +4,43 @@ using FEDeksamenMaui.Data;
 using FEDeksamenMaui.Models;
 using FEDeksamenMaui.Views;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FEDeksamenMaui.ViewModels
 {
     public partial class MainViewModel : ObservableObject
     {
-        public ObservableCollection<Models.Order> Model1Items { get; set; } = new();
-
-        [ObservableProperty]
-        private Models.Order? _selectedItem;
-
-        public string NewCustomerName { get; set; }
-        public string NewCustomerAddress { get; set; }
-        public string NewCarBrand { get; set; }
-        public string NewCarModel { get; set; }
-        public string NewRegNumber { get; set; }
-        public DateTime NewTimeOfSubmission { get; set; }
-        public string NewReperation { get; set; }
-
-
         private readonly IDatabase _database;
 
-        private DateOnly newDate;
-        public DateOnly NewDate
-        {
-            get => newDate;
-            set
-            {
-                if (SetProperty(ref newDate, value))
-                {
-                    UpdateTimeOfSubmission();
-                }
-            }
-        }
+        public ObservableCollection<Order> Orders { get; set; } = new();
+        public ObservableCollection<ShowInvoiceModel> Invoices { get; set; } = new();
 
-        private TimeOnly newTime;
-        public TimeOnly NewTime
-        {
-            get => newTime;
-            set
-            {
-                if (SetProperty(ref newTime, value))
-                {
-                    UpdateTimeOfSubmission();
-                }
-            }
-        }
+        [ObservableProperty]
+        private Order? selectedOrder;
 
-        private void UpdateTimeOfSubmission()
-        {
-            NewTimeOfSubmission = new DateTime(NewDate.Year, NewDate.Month, NewDate.Day, NewTime.Hour, NewTime.Minute, NewTime.Second);
-        }
+        [ObservableProperty]
+        private bool invoicesVisible;
 
         public MainViewModel(IDatabase database)
         {
             _database = database;
-            Initialize();
+            _ = Initialize();
         }
 
         private async Task Initialize()
         {
-            NewDate = DateOnly.FromDateTime(DateTime.Now);
-            NewTime = TimeOnly.FromDateTime(DateTime.Now);
-            UpdateTimeOfSubmission();
+            InvoicesVisible = false;
+            await ShowAllOrders();
+        }
+
+        [RelayCommand]
+        public async Task CreateOrder()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new AddOrderPage());
+            Debug.WriteLine("CreateOrder command executed");
         }
 
         [RelayCommand]
@@ -81,28 +49,63 @@ namespace FEDeksamenMaui.ViewModels
             await Application.Current.MainPage.Navigation.PushAsync(new CalendarPage());
         }
 
-        [RelayCommand]
-        public async Task BookOrder()
+        public async Task ShowAllOrders()
         {
             try
             {
-                var order = new Order
+                var orders = await _database.GetAllOrders();
+                Orders.Clear();
+                foreach (var order in orders)
                 {
-                    CustomerName = NewCustomerName,
-                    CustomerAddress = NewCustomerAddress,
-                    CarBrand = NewCarBrand,
-                    CarModel = NewCarModel,
-                    RegistrationNumber = NewRegNumber,
-                    TimeOfSubmission = NewTimeOfSubmission,
-                    Reperation = NewReperation
-                };
-
-                var status = await _database.SaveNewOrder(order);
+                    Orders.Add(order);
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("Exception saving new order: " + ex.Message);
+                Debug.WriteLine("Exp while showing orders" + ex.Message);
             }
         }
+
+        [RelayCommand]
+        public async Task ShowInvoices()
+        {
+            try
+            {
+                if (SelectedOrder != null)
+                {
+                    var invoice = await _database.GetInvoiceForOrder(SelectedOrder.Id);
+                    Invoices.Clear();
+
+                    if (invoice != null)
+                    {
+                        var order = await _database.GetOrderById(invoice.OrderId);
+                        var invoiceViewModel = new ShowInvoiceModel
+                        {
+                            MechanicName = invoice.MechanicName,
+                            HoursUsed = invoice.HoursUsed,
+                            Price = invoice.Price,
+                            CustomerName = order.CustomerName,
+                            MaterialsUsed = invoice.MaterialsUsed
+                        };
+                        Invoices.Add(invoiceViewModel);
+                    }
+
+                    InvoicesVisible = invoice != null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exp while showing invoice: " + ex.Message);
+            }
+        }
+    }
+
+    public class ShowInvoiceModel : ObservableObject
+    {
+        public string MechanicName { get; set; }
+        public int HoursUsed { get; set; }
+        public int Price { get; set; }
+        public string CustomerName { get; set; }
+        public List<Dictionary<string, int>> MaterialsUsed { get; set; }
     }
 }

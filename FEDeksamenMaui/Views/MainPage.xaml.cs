@@ -8,17 +8,22 @@ namespace FEDeksamenMaui
         public MainPage()
         {
             InitializeComponent();
+        }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             var database = App.Services.GetService<IDatabase>();
             BindingContext = new MainViewModel(database);
         }
 
-        private void OnDateSelected(object sender, SelectionChangedEventArgs e)
+        private async void OnOrderSelected(object sender, SelectionChangedEventArgs e)
         {
             if (e.CurrentSelection.FirstOrDefault() is DayViewModel selectedDate)
             {
                 var viewModel = (CalendarViewModel)BindingContext;
                 viewModel.SelectedDate = selectedDate;
+                await viewModel.ShowOrdersCommand.ExecuteAsync(null);
             }
         }
     }

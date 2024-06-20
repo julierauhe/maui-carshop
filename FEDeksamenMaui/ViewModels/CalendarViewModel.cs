@@ -49,7 +49,15 @@ namespace FEDeksamenMaui.ViewModels
         [RelayCommand]
         public async Task CreateInvoice()
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage(selectedOrder.Id));
+            if(_selectedDate != null && selectedOrder != null)
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new InvoicePage(selectedOrder.Id));
+            }
+            else
+            {
+                //implement message showing: no date or order chosen
+            }
+
         }
 
         private void UpdateCalendar()
@@ -100,10 +108,9 @@ namespace FEDeksamenMaui.ViewModels
 
                     await Task.CompletedTask;
 
-                    if(orders.Count == 0)
-                    {
-                        NoOrdersMessageVisible = orders.Count == 0;
-                    }
+                    NoOrdersMessageVisible = orders.Count == 0;
+
+                    
                 }
             }
             catch (Exception ex)
@@ -111,32 +118,6 @@ namespace FEDeksamenMaui.ViewModels
                 Debug.WriteLine("Exp while showing orders for date: " + ex.Message);
             }
     
-        }
-
-        [RelayCommand]
-        public async Task ShowAllOrders()
-        {
-            try
-            {
-                var orders = await _database.GetAllOrders();
-
-                OrdersForSelectedDate.Clear();
-                foreach (var order in orders)
-                {
-                    OrdersForSelectedDate.Add(order);
-                }
-
-                await Task.CompletedTask;
-
-                if (orders.Count == 0)
-                {
-                    NoOrdersMessageVisible = orders.Count == 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Exp while showing orders for date: " + ex.Message);
-            }
         }
     }
 

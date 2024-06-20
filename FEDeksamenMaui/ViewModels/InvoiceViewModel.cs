@@ -18,10 +18,10 @@ namespace FEDeksamenMaui.ViewModels
         private string mechanicName;
 
         [ObservableProperty]
-        private float hoursUsed;
+        private int hoursUsed;
 
         [ObservableProperty]
-        private decimal price;
+        private int price;
 
         public ObservableCollection<MaterialViewModel> MaterialsUsed { get; set; } = new();
 
@@ -53,7 +53,7 @@ namespace FEDeksamenMaui.ViewModels
             try
             {
                 var materials = MaterialsUsed
-                    .Select(m => new Dictionary<string, decimal> { { m.Name, m.Price } })
+                    .Select(m => new Dictionary<string, int> { { m.Name, m.Price } })
                     .ToList();
 
                 var invoice = new Invoice
@@ -61,8 +61,8 @@ namespace FEDeksamenMaui.ViewModels
                     OrderId = _orderId,
                     MechanicName = MechanicName,
                     MaterialsUsed = materials,
-                    HoursUsed = HoursUsed,
-                    Price = Price
+                    HoursUsed = Convert.ToInt32(HoursUsed),
+                    Price = Convert.ToInt32(Price)
                 };
 
                 var status = await _database.SaveNewInvoice(invoice);
@@ -79,6 +79,6 @@ namespace FEDeksamenMaui.ViewModels
         private string name;
 
         [ObservableProperty]
-        private decimal price;
+        private int price;
     }
 }

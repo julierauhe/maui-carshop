@@ -3,7 +3,7 @@
     x:Class="FEDeksamenMaui.Views.InvoicePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="InvoicePage">
+    Title="Invoices">
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
             <Label
@@ -21,7 +21,7 @@
                         <VerticalStackLayout>
                             <Label Text="Material Name" />
                             <Entry Placeholder="Enter material name" Text="{Binding Name}" />
-                            <Label Text="Material Price" />
+                            <Label Text="Material Price (in dkk)" />
                             <Entry
                                 Keyboard="Numeric"
                                 Placeholder="Enter material price in dkk"
@@ -42,7 +42,7 @@
                 Placeholder="Enter hours used"
                 Text="{Binding HoursUsed}" />
 
-            <Label Text="Price" />
+            <Label Text="Price (in dkk)" />
             <Entry
                 Keyboard="Numeric"
                 Placeholder="Enter price in dkk"
